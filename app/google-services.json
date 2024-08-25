@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "912460469539",
+    "project_id": "sirdas-a5db0",
+    "storage_bucket": "sirdas-a5db0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:912460469539:android:14721b790fc72f7a92a896",
+        "android_client_info": {
+          "package_name": "com.gultekinahmetabdullah.sirdas"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBVB1ZNNhzoSAWGouDl9o2JT9BfaB-RKc0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
