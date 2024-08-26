@@ -21,7 +21,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            SirdasTheme(darkTheme = true, dynamicColor = true) {
+            SirdasTheme {
                 val isSignedIn = remember { mutableStateOf(checkIfSignedIn()) }
                 if (isSignedIn.value) {
                     MainNavigator(onLogout = {
