@@ -23,7 +23,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.gultekinahmetabdullah.sirdas.dataclasses.Feedback
+import com.gultekinahmetabdullah.sirdas.classes.dataclasses.Feedback
 import com.gultekinahmetabdullah.sirdas.viewmodels.UserViewModel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
@@ -65,13 +65,13 @@ fun FeedbackScreen(viewModel: UserViewModel) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Email Text Field (optional)
-        OutlinedTextField(
-            value = email.value,
-            onValueChange = { email.value = it },
-            label = { Text("Your Email (optional)") },
-            modifier = Modifier.fillMaxWidth()
-        )
+//        // Email Text Field (optional)
+//        OutlinedTextField(
+//            value = email.value,
+//            onValueChange = { email.value = it },
+//            label = { Text("Your Email (optional)") },
+//            modifier = Modifier.fillMaxWidth()
+//        )
 
         Spacer(modifier = Modifier.height(16.dp))
 

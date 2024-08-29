@@ -50,7 +50,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.gultekinahmetabdullah.sirdas.R
-import com.gultekinahmetabdullah.sirdas.dataclasses.Document
+import com.gultekinahmetabdullah.sirdas.classes.dataclasses.Document
 import com.gultekinahmetabdullah.sirdas.viewmodels.DocumentViewModel
 import java.io.File
 
@@ -78,7 +78,12 @@ fun DocumentScreen(viewModel: DocumentViewModel = viewModel()) {
 
     Scaffold(
         topBar = {
-            TopAppBar(title = { Text("File Management") })
+            TopAppBar(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight(0f),
+                title = { Text("Documents") }
+            )
         },
         floatingActionButton = {
             FloatingActionButton(onClick = { filePickerLauncher.launch("*/*") }) {
@@ -89,7 +94,6 @@ fun DocumentScreen(viewModel: DocumentViewModel = viewModel()) {
         Column(
             modifier = Modifier
                 .padding(innerPadding)
-                .padding(16.dp)
                 .fillMaxSize()
         ) {
             // File upload section

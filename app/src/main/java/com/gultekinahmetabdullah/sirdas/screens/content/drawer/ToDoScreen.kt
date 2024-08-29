@@ -1,58 +1,70 @@
 package com.gultekinahmetabdullah.sirdas.screens.content.drawer
 
-import androidx.compose.runtime.Composable
-
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.gultekinahmetabdullah.sirdas.dataclasses.ToDoItem
+import com.gultekinahmetabdullah.sirdas.classes.dataclasses.ToDoItem
 import com.gultekinahmetabdullah.sirdas.viewmodels.ToDoViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ToDoScreen(viewModel: ToDoViewModel = viewModel()) {
     var newTask by remember { mutableStateOf("") }
+    var isTextFieldAvailable by remember { mutableStateOf(false) }
 
     LaunchedEffect(key1 = true) {
         viewModel.fetchTodos()
     }
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("To-Do List") }
-            )
-        },
-        floatingActionButton = {
-            FloatingActionButton(onClick = {
-                viewModel.addToDoItem(newTask)
-                newTask = "" // Reset input field after adding the task
-            }) {
-                Icon(Icons.Default.Add, contentDescription = "Add Task")
-            }
-        }
-    ) { innerPadding ->
+    Box(modifier = Modifier.fillMaxSize()) {
         Column(
             modifier = Modifier
-                .padding(innerPadding)
                 .padding(16.dp)
                 .fillMaxSize()
         ) {
-            TextField(
-                value = newTask,
-                onValueChange = { newTask = it },
-                label = { Text("New Task") },
-                modifier = Modifier.fillMaxWidth()
-            )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            if (isTextFieldAvailable) {
+                TextField(
+                    value = newTask,
+                    onValueChange = { newTask = it },
+                    label = { Text("New Task") },
+                    modifier = Modifier.fillMaxWidth()
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+            }
+
+            Row {
+
+            }
 
             LazyColumn(
                 verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -66,6 +78,23 @@ fun ToDoScreen(viewModel: ToDoViewModel = viewModel()) {
                     )
                 }
             }
+
+        }
+
+        FloatingActionButton(
+            onClick = {
+                if (isTextFieldAvailable) {
+                    viewModel.addToDoItem(newTask)
+                    newTask = "" // Reset input field after adding the task
+                } else {
+                    isTextFieldAvailable = true
+                }
+            }, modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(32.dp)
+                .imePadding()
+        ) {
+            Icon(Icons.Default.Add, contentDescription = "Add Task")
         }
     }
 }

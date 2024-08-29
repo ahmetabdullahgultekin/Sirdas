@@ -1,22 +1,19 @@
 package com.gultekinahmetabdullah.sirdas.viewmodels
 
 import android.util.Log
-import androidx.lifecycle.ViewModel
 import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshots.SnapshotStateList
-import androidx.compose.runtime.toMutableStateList
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.gultekinahmetabdullah.sirdas.dataclasses.ToDoItem
+import com.gultekinahmetabdullah.sirdas.classes.dataclasses.ToDoItem
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.util.UUID
 
 class ToDoViewModel : ViewModel() {
 
     private var nextId = 0
+    private val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
     private val db = FirebaseFirestore.getInstance()
     private val todosCollection = db.collection("todos")
 
@@ -27,7 +24,7 @@ class ToDoViewModel : ViewModel() {
         if (task.isNotBlank()) {
             ++nextId
             //toDoItems.add(ToDoItem(id = nextId, task = task))
-            addTodo(ToDoItem(id = nextId, task = task))
+            addTodo(ToDoItem(userId, id = nextId, task = task))
         }
     }
 
@@ -89,7 +86,8 @@ class ToDoViewModel : ViewModel() {
 
     // Add a new to-do item
     private fun addTodo(todoItem: ToDoItem) {
-        val newTodo = ToDoItem(id = todoItem.id, task = todoItem.task, isChecked = todoItem.isChecked)
+        val newTodo =
+            ToDoItem(userId, id = todoItem.id, task = todoItem.task, isChecked = todoItem.isChecked)
         viewModelScope.launch(Dispatchers.IO) {
             todosCollection.document(newTodo.id.toString()).set(newTodo).addOnSuccessListener {
                 toDoItems.add(newTodo)

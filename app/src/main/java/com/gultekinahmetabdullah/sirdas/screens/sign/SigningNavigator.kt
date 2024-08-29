@@ -1,38 +1,49 @@
 // app/src/main/java/com/gultekinahmetabdullah/sirdas/screens/SignInScreen.kt
 package com.gultekinahmetabdullah.sirdas.screens.sign
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.gultekinahmetabdullah.sirdas.screens.sign.signings.ForgotPasswordScreen
 import com.gultekinahmetabdullah.sirdas.screens.sign.signings.SignInScreen
 import com.gultekinahmetabdullah.sirdas.screens.sign.signings.SignUpScreen
+import com.gultekinahmetabdullah.sirdas.viewmodels.PreferencesViewModel
 
 @Composable
-fun SigningScreen(onSignIn: () -> Unit, onSignUp: () -> Unit) {
-
+fun SigningScreen(onSignIn: () -> Unit, onSignUp: () -> Unit, viewModel: PreferencesViewModel) {
     val navController = rememberNavController()
 
-    Scaffold(
-        modifier = Modifier.fillMaxSize(),
-        content = { padding ->
-            NavHost(
-                navController = navController,
-                startDestination = "signin",
-                modifier = Modifier.padding(padding)
-            )     {
-                composable("signin") { SignInScreen(onSignIn, navController) }
-                composable("signup") { SignUpScreen(onSignUp, onGoBack = { navController.popBackStack() }) }
-                composable("forgotpassword") { ForgotPasswordScreen(onGoBack = {
-                    navController.popBackStack()
-                }) }
-            }
+    NavHost(
+        navController = navController,
+        startDestination = "signin",
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+    ) {
+        composable("signin") {
+            SignInScreen(
+                onSignIn,
+                navController,
+            )
         }
-    )
+        composable("signup") {
+            SignUpScreen(
+                onSignUp,
+                onGoBack = { navController.popBackStack() },
+                viewModel = viewModel
+            )
+        }
+        composable("forgotpassword") {
+            ForgotPasswordScreen(onGoBack = {
+                navController.popBackStack()
+            })
+        }
+    }
 }
 
 fun validatePassword(password: String): Boolean {

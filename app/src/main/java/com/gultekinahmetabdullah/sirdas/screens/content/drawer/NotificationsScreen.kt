@@ -1,63 +1,69 @@
 package com.gultekinahmetabdullah.sirdas.screens.content.drawer
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Switch
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.gultekinahmetabdullah.sirdas.viewmodels.PreferencesViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NotificationsScreen() {
-    val receiveNotifications = remember { mutableStateOf(true) }
-    val soundEnabled = remember { mutableStateOf(true) }
-    val vibrateEnabled = remember { mutableStateOf(false) }
+fun NotificationsScreen(
+    viewModel: PreferencesViewModel,
+    onNotificationsEnabledChange: (Boolean) -> Unit,
+    onSoundEnabledChange: (Boolean) -> Unit,
+    onVibrationEnabledChange: (Boolean) -> Unit
+) {
+    val receiveNotifications =
+        remember { mutableStateOf(viewModel.userPreferences.value?.notificationEnabled ?: true) }
+    val soundEnabled =
+        remember { mutableStateOf(viewModel.userPreferences.value?.soundEnabled ?: true) }
+    val vibrateEnabled =
+        remember { mutableStateOf(viewModel.userPreferences.value?.vibrationEnabled ?: true) }
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("Notifications") }
-            )
-        }
-    ) { innerPadding ->
-        Column(
-            modifier = Modifier
-                .padding(innerPadding)
-                .fillMaxSize()
-                .padding(16.dp)
-        ) {
-            Text(
-                text = "Notification Settings",
-                style = MaterialTheme.typography.titleMedium,
-                modifier = Modifier.padding(vertical = 8.dp)
-            )
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+    ) {
+        Text(
+            text = "Notification Settings",
+            style = MaterialTheme.typography.titleMedium,
+            modifier = Modifier.padding(vertical = 8.dp)
+        )
 
-            // Toggle Notifications
-            SwitchPreference(
-                title = "Receive Notifications",
-                isChecked = receiveNotifications.value,
-                onCheckedChange = { receiveNotifications.value = it }
-            )
+        // Toggle Notifications
+        SwitchPreference(
+            title = "Receive Notifications",
+            isChecked = receiveNotifications.value,
+            onCheckedChange = { onNotificationsEnabledChange(it); receiveNotifications.value = it }
+        )
 
-            // Toggle Sound
-            SwitchPreference(
-                title = "Sound",
-                isChecked = soundEnabled.value,
-                onCheckedChange = { soundEnabled.value = it },
-                enabled = receiveNotifications.value
-            )
+        // Toggle Sound
+        SwitchPreference(
+            title = "Sound",
+            isChecked = soundEnabled.value,
+            onCheckedChange = { onSoundEnabledChange(it); soundEnabled.value = it },
+            enabled = receiveNotifications.value
+        )
 
-            // Toggle Vibration
-            SwitchPreference(
-                title = "Vibrate",
-                isChecked = vibrateEnabled.value,
-                onCheckedChange = { vibrateEnabled.value = it },
-                enabled = receiveNotifications.value
-            )
-        }
+        // Toggle Vibration
+        SwitchPreference(
+            title = "Vibrate",
+            isChecked = vibrateEnabled.value,
+            onCheckedChange = { onVibrationEnabledChange(it); vibrateEnabled.value = it },
+            enabled = receiveNotifications.value
+        )
     }
 }
 
@@ -78,7 +84,9 @@ fun SwitchPreference(
         Text(
             text = title,
             modifier = Modifier.weight(1f),
-            color = if (enabled) MaterialTheme.colorScheme.onBackground else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+            color = if (enabled) MaterialTheme.colorScheme.onBackground else MaterialTheme.colorScheme.onSurface.copy(
+                alpha = 0.6f
+            )
         )
         Switch(
             checked = isChecked,
@@ -86,10 +94,4 @@ fun SwitchPreference(
             enabled = enabled
         )
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun NotificationsScreenPreview() {
-    NotificationsScreen()
 }

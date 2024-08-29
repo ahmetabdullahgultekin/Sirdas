@@ -2,6 +2,7 @@ package com.gultekinahmetabdullah.sirdas.screens.content.drawer.profile
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,7 +21,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.gultekinahmetabdullah.sirdas.R
+import com.gultekinahmetabdullah.sirdas.classes.enums.Avatars
 import com.gultekinahmetabdullah.sirdas.viewmodels.UserViewModel
 
 @Composable
@@ -31,18 +32,19 @@ fun ProfileScreen(viewModel: UserViewModel, onEditProfile: () -> Unit) {
             .fillMaxSize()
             .padding(16.dp)
             .background(MaterialTheme.colorScheme.background),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
     ) {
-        Spacer(modifier = Modifier.height(24.dp))
-
         // Profile Image
         Image(
-            painter = painterResource(id = R.drawable.ic_launcher_background),
+            painter = painterResource(
+                id = Avatars.entries[viewModel.userProfile?.profileIconID ?: 0].drawableRes
+            ),
             contentDescription = "Profile Image",
             contentScale = ContentScale.Crop,
             modifier = Modifier
-                .size(120.dp)
                 .clip(CircleShape)
+                .size(400.dp)
                 .background(MaterialTheme.colorScheme.primary)
         )
 
@@ -51,17 +53,25 @@ fun ProfileScreen(viewModel: UserViewModel, onEditProfile: () -> Unit) {
         // User Name
         Text(
             text = viewModel.userProfile?.name ?: "",
-            style = MaterialTheme.typography.headlineSmall,
+            style = MaterialTheme.typography.headlineMedium,
             modifier = Modifier.padding(vertical = 8.dp)
         )
 
         // Email
         Text(
             text = viewModel.userProfile?.email ?: "",
-            style = MaterialTheme.typography.bodyMedium,
+            style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.onBackground,
             modifier = Modifier.padding(vertical = 4.dp)
         )
+
+        // Date of Joining TODO: Change to actual date
+        /*        Text(
+                    text = viewModel.userProfile?: "",
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.onBackground,
+                    modifier = Modifier.padding(vertical = 4.dp)
+                )*/
 
         Spacer(modifier = Modifier.height(24.dp))
 

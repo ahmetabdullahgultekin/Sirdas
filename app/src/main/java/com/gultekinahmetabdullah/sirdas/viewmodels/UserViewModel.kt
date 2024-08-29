@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.gultekinahmetabdullah.sirdas.dataclasses.User
+import com.gultekinahmetabdullah.sirdas.classes.dataclasses.User
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 

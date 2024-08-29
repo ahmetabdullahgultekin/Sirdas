@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
-import com.gultekinahmetabdullah.sirdas.dataclasses.Document
+import com.gultekinahmetabdullah.sirdas.classes.dataclasses.Document
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
@@ -101,7 +101,8 @@ class DocumentViewModel : ViewModel() {
                 oldFileRef.delete().await()
 
                 // Step 5: Update the local list with the new file details
-                val updatedFileItem = oldFileItem.copy(name = newFileName, downloadUrl = newDownloadUrl)
+                val updatedFileItem =
+                    oldFileItem.copy(name = newFileName, downloadUrl = newDownloadUrl)
                 val index = fileItems.indexOf(oldFileItem)
                 if (index != -1) {
                     fileItems[index] = updatedFileItem
