@@ -12,12 +12,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Face
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
@@ -34,6 +33,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -61,7 +62,15 @@ fun SignInScreen(
     val snackbarHostState = remember { SnackbarHostState() }
     var isLoading by remember { mutableStateOf(false) }
 
-    Box(modifier = Modifier.fillMaxSize()) {
+    val context = LocalContext.current
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(
+                MaterialTheme.colorScheme.background
+            )
+    ) {
         Column(
             modifier = Modifier
                 .padding(16.dp)
@@ -72,7 +81,7 @@ fun SignInScreen(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp),
+                    .padding(top = 16.dp),
                 horizontalArrangement = Arrangement.End,
                 verticalAlignment = Alignment.Top
             ) {
@@ -80,7 +89,7 @@ fun SignInScreen(
                     onClick = { navController.navigate("forgotpassword") },
                     modifier = Modifier.align(Alignment.Top)
                 ) {
-                    Text("Forgot Password?")
+                    Text(context.getString(R.string.forgot_password))
                 }
             }
 
@@ -95,7 +104,7 @@ fun SignInScreen(
 
                 // App Logo
                 Image(
-                    imageVector = Icons.Filled.Face,
+                    painter = painterResource(id = R.drawable.sirdas),
                     contentDescription = "App Logo",
                     modifier = Modifier
                         .fillMaxWidth()
@@ -105,15 +114,16 @@ fun SignInScreen(
                 OutlinedTextField(
                     value = email,
                     onValueChange = { email = it },
-                    label = { Text("Email") },
+                    label = { Text(text = context.getString(R.string.email)) },
                     modifier = Modifier.fillMaxWidth()
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 OutlinedTextField(
                     value = password,
                     onValueChange = { password = it },
-                    label = { Text("Password") },
-                    visualTransformation = if (passwordVisibility.value) VisualTransformation.None else PasswordVisualTransformation(),
+                    label = { Text(text = context.getString(R.string.password)) },
+                    visualTransformation = if (passwordVisibility.value) VisualTransformation.None
+                    else PasswordVisualTransformation(),
                     modifier = Modifier.fillMaxWidth(),
                     trailingIcon = {
                         IconButton(onClick = {
@@ -125,7 +135,10 @@ fun SignInScreen(
                                 ) else ImageVector.vectorResource(
                                     id = R.drawable.baseline_visibility_24
                                 ),
-                                contentDescription = if (passwordVisibility.value) "Hide password" else "Show password"
+                                contentDescription = if (passwordVisibility.value)
+                                    context.getString(R.string.hide_password)
+                                else context.getString(R.string.show_password)
+
                             )
                         }
                     }
@@ -174,14 +187,14 @@ fun SignInScreen(
                     }
 
                 }) {
-                    Text("Sign In")
+                    Text(context.getString(R.string.sign_in))
                 }
 
                 TextButton(
                     onClick = { navController.navigate("signup") },
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text("Sign Up")
+                    Text(context.getString(R.string.sign_up))
                 }
             }
 

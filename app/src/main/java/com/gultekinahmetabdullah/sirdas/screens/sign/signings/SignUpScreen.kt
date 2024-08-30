@@ -38,6 +38,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -68,11 +69,13 @@ fun SignUpScreen(onSignUp: () -> Unit, onGoBack: () -> Unit, viewModel: Preferen
     val snackbarHostState = remember { SnackbarHostState() }
     var isLoading by remember { mutableStateOf(false) }
 
+    val context = LocalContext.current
+
     Box(modifier = Modifier.fillMaxSize()) {
         Scaffold(
             topBar = {
                 TopAppBar(
-                    title = { Text("Sign Up") },
+                    title = { Text(context.getString(R.string.sign_up)) },
                     navigationIcon = {
                         IconButton(onClick = { onGoBack() }) {
                             Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
@@ -97,7 +100,7 @@ fun SignUpScreen(onSignUp: () -> Unit, onGoBack: () -> Unit, viewModel: Preferen
                 OutlinedTextField(
                     value = name.value,
                     onValueChange = { name.value = it },
-                    label = { Text("Name") },
+                    label = { Text(context.getString(R.string.name)) },
                     modifier = Modifier.fillMaxWidth()
                 )
 
@@ -105,7 +108,7 @@ fun SignUpScreen(onSignUp: () -> Unit, onGoBack: () -> Unit, viewModel: Preferen
                 OutlinedTextField(
                     value = email.value,
                     onValueChange = { email.value = it },
-                    label = { Text("Email") },
+                    label = { Text(context.getString(R.string.email)) },
                     modifier = Modifier.fillMaxWidth()
                 )
 
@@ -113,7 +116,7 @@ fun SignUpScreen(onSignUp: () -> Unit, onGoBack: () -> Unit, viewModel: Preferen
                 OutlinedTextField(
                     value = password.value,
                     onValueChange = { password.value = it },
-                    label = { Text("Password") },
+                    label = { Text(context.getString(R.string.password)) },
                     visualTransformation = if (passwordVisibility.value) VisualTransformation.None else PasswordVisualTransformation(),
                     modifier = Modifier.fillMaxWidth(),
                     trailingIcon = {
@@ -136,7 +139,7 @@ fun SignUpScreen(onSignUp: () -> Unit, onGoBack: () -> Unit, viewModel: Preferen
                 OutlinedTextField(
                     value = confirmPassword.value,
                     onValueChange = { confirmPassword.value = it },
-                    label = { Text("Confirm Password") },
+                    label = { Text(context.getString(R.string.confirm_password)) },
                     visualTransformation = if (passwordVisibility.value) VisualTransformation.None else PasswordVisualTransformation(),
                     modifier = Modifier.fillMaxWidth(),
                     trailingIcon = {
@@ -240,7 +243,7 @@ fun SignUpScreen(onSignUp: () -> Unit, onGoBack: () -> Unit, viewModel: Preferen
                         }
                     }
                 }) {
-                    Text("Sign Up")
+                    Text(context.getString(R.string.sign_up))
                 }
             }
         }

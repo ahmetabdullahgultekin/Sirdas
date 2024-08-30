@@ -1,11 +1,11 @@
 // app/src/main/java/com/gultekinahmetabdullah/sirdas/screens/SignInScreen.kt
 package com.gultekinahmetabdullah.sirdas.screens.sign
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -23,7 +23,9 @@ fun SigningScreen(onSignIn: () -> Unit, onSignUp: () -> Unit, viewModel: Prefere
         startDestination = "signin",
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
+            .background(
+                MaterialTheme.colorScheme.background
+            )
     ) {
         composable("signin") {
             SignInScreen(

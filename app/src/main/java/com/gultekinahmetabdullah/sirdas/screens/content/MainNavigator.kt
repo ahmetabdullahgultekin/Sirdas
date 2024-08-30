@@ -67,16 +67,18 @@ import com.gultekinahmetabdullah.sirdas.screens.content.bottombar.calender.Calen
 import com.gultekinahmetabdullah.sirdas.screens.content.bottombar.home.HomeScreen
 import com.gultekinahmetabdullah.sirdas.screens.content.bottombar.search.SearchScreen
 import com.gultekinahmetabdullah.sirdas.screens.content.drawer.AboutScreen
-import com.gultekinahmetabdullah.sirdas.screens.content.drawer.BookPursuingScreen
+import com.gultekinahmetabdullah.sirdas.screens.content.drawer.BookScreen
 import com.gultekinahmetabdullah.sirdas.screens.content.drawer.FeedbackScreen
 import com.gultekinahmetabdullah.sirdas.screens.content.drawer.HealthScreen
 import com.gultekinahmetabdullah.sirdas.screens.content.drawer.JobsScreen
 import com.gultekinahmetabdullah.sirdas.screens.content.drawer.SettingsScreen
+import com.gultekinahmetabdullah.sirdas.screens.content.drawer.StatisticsScreen
 import com.gultekinahmetabdullah.sirdas.screens.content.drawer.StudyScreen
 import com.gultekinahmetabdullah.sirdas.screens.content.drawer.ToDoScreen
 import com.gultekinahmetabdullah.sirdas.screens.content.drawer.document.DocumentScreen
 import com.gultekinahmetabdullah.sirdas.screens.content.drawer.profile.EditProfileScreen
 import com.gultekinahmetabdullah.sirdas.screens.content.drawer.profile.ProfileScreen
+import com.gultekinahmetabdullah.sirdas.viewmodels.BookViewModel
 import com.gultekinahmetabdullah.sirdas.viewmodels.HealthViewModel
 import com.gultekinahmetabdullah.sirdas.viewmodels.PreferencesViewModel
 import com.gultekinahmetabdullah.sirdas.viewmodels.UserViewModel
@@ -90,13 +92,14 @@ fun MainNavigator(
     onLogout: () -> Unit,
     userViewModel: UserViewModel,
     preferencesViewModel: PreferencesViewModel,
-    healthViewModel: HealthViewModel
+    healthViewModel: HealthViewModel,
+    bookViewModel: BookViewModel
 ) {
     val context = LocalContext.current
 
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
-    val selectedItem = remember { mutableIntStateOf(0) }
+    val selectedItem = remember { mutableIntStateOf(10) }
     val navController = rememberNavController()
     val title = remember { mutableStateOf(context.getString(R.string.home)) }
 
@@ -293,9 +296,9 @@ fun MainNavigator(
                         NavigationBarItem(
                             icon = { Icon(Icons.Filled.Home, contentDescription = "Home") },
                             label = { Text(context.getString(R.string.home)) },
-                            selected = selectedItem.intValue == 0 && drawerState.isOpen.not(),
+                            selected = selectedItem.intValue == 10 && drawerState.isOpen.not(),
                             onClick = {
-                                selectedItem.intValue = 0
+                                selectedItem.intValue = 10
                                 title.value = context.getString(R.string.home)
                                 navController.navigate("home")
                             }
@@ -303,9 +306,9 @@ fun MainNavigator(
                         NavigationBarItem(
                             icon = { Icon(Icons.Filled.Search, contentDescription = "Search") },
                             label = { Text(context.getString(R.string.search)) },
-                            selected = selectedItem.intValue == 1 && drawerState.isOpen.not(),
+                            selected = selectedItem.intValue == 11 && drawerState.isOpen.not(),
                             onClick = {
-                                selectedItem.intValue = 1
+                                selectedItem.intValue = 11
                                 title.value = context.getString(R.string.search)
                                 navController.navigate("search")
                             }
@@ -318,9 +321,9 @@ fun MainNavigator(
                                 )
                             },
                             label = { Text(context.getString(R.string.calendar)) },
-                            selected = selectedItem.intValue == 2 && drawerState.isOpen.not(),
+                            selected = selectedItem.intValue == 12 && drawerState.isOpen.not(),
                             onClick = {
-                                selectedItem.intValue = 2
+                                selectedItem.intValue = 12
                                 title.value = context.getString(R.string.calendar)
                                 navController.navigate("calender")
                             }
@@ -333,7 +336,7 @@ fun MainNavigator(
                         startDestination = "home",
                         modifier = Modifier
                             .padding(padding)
-                            .padding(16.dp)
+                            .padding(16.dp, 16.dp, 16.dp, 0.dp)
                             .fillMaxSize()
                     ) {
                         composable("home") {
@@ -364,14 +367,18 @@ fun MainNavigator(
                         composable("study") { StudyScreen() }
                         composable("internships") { JobsScreen() }
                         composable("todo") { ToDoScreen() }
-                        composable("books") { BookPursuingScreen() }
+                        composable("books") {
+                            BookScreen(
+                                viewModel = bookViewModel
+                            )
+                        }
                         composable("health") {
                             HealthScreen(
                                 viewModel = healthViewModel
                             )
                         }
                         composable("statistics") {
-
+                            StatisticsScreen()
                         }
                         composable("feedback") {
                             FeedbackScreen(

@@ -2,7 +2,6 @@
 package com.gultekinahmetabdullah.sirdas
 
 import android.content.Context
-import android.content.Intent
 import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
@@ -11,6 +10,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import com.google.firebase.auth.FirebaseAuth
@@ -18,10 +18,13 @@ import com.gultekinahmetabdullah.sirdas.classes.dataclasses.UserPreferences
 import com.gultekinahmetabdullah.sirdas.classes.enums.Languages
 import com.gultekinahmetabdullah.sirdas.screens.content.MainNavigator
 import com.gultekinahmetabdullah.sirdas.screens.sign.SigningScreen
+import com.gultekinahmetabdullah.sirdas.screens.splash.SplashScreen
 import com.gultekinahmetabdullah.sirdas.ui.theme.SirdasTheme
+import com.gultekinahmetabdullah.sirdas.viewmodels.BookViewModel
 import com.gultekinahmetabdullah.sirdas.viewmodels.HealthViewModel
 import com.gultekinahmetabdullah.sirdas.viewmodels.PreferencesViewModel
 import com.gultekinahmetabdullah.sirdas.viewmodels.UserViewModel
+import kotlinx.coroutines.delay
 import java.util.Locale
 
 class MainActivity : ComponentActivity() {
@@ -31,13 +34,9 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
 
-            val isDarkTheme = remember { mutableStateOf(fetchUserPreferences().themeDark) }
+            val userPreferences = fetchUserPreferences()
+            val isDarkTheme = remember { mutableStateOf(userPreferences.themeDark) }
             val isSignedIn = remember { mutableStateOf(checkIfSignedIn()) }
-
-            /*            val onThemeChange: (Boolean) -> Unit = {
-                            isDarkTheme.value = it
-                        }*/
-
 
             val onSavePreferences: (UserPreferences) -> Unit = {
                 setUserPreferences(it)
@@ -46,10 +45,25 @@ class MainActivity : ComponentActivity() {
             }
 
             val userViewModel = UserViewModel()
-            val preferencesViewModel = PreferencesViewModel()
+            val preferencesViewModel = PreferencesViewModel(userPreferences)
             val healthViewModel = HealthViewModel()
+            val bookViewModel = BookViewModel()
+
+            val isSplashScreenFinished = remember { mutableStateOf(true) }
+
+            setLocale(this, userPreferences.language.ordinal)
 
             SirdasTheme(darkTheme = isDarkTheme.value) {
+
+                if (isSplashScreenFinished.value) {
+                    SplashScreen()
+                }
+
+                LaunchedEffect(Unit) {
+                    delay(5000)
+                    isSplashScreenFinished.value = false
+                }
+
 
                 if (isSignedIn.value) {
                     MainNavigator(
@@ -61,7 +75,8 @@ class MainActivity : ComponentActivity() {
                         },
                         userViewModel = userViewModel,
                         preferencesViewModel = preferencesViewModel,
-                        healthViewModel = healthViewModel
+                        healthViewModel = healthViewModel,
+                        bookViewModel = bookViewModel
                     )
                 } else {
                     SigningScreen(
@@ -76,13 +91,14 @@ class MainActivity : ComponentActivity() {
                         viewModel = preferencesViewModel
                     )
                 }
+
             }
         }
     }
 
     private fun checkIfSignedIn(): Boolean {
         val sharedPreferences = getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
-        if (FirebaseAuth.getInstance().currentUser == null) {
+        if (FirebaseAuth.getInstance().currentUser?.isAnonymous == true) {
             return false
         }
         return sharedPreferences.getBoolean("is_signed_in", false)
@@ -161,18 +177,16 @@ class MainActivity : ComponentActivity() {
         val resources = context.resources
         val config = Configuration(resources.configuration)
 
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-            config.setLocales(LocaleList(locale))
-        } else {
-            config.locale = locale
-        }
+        config.setLocales(LocaleList(locale))
 
         resources.updateConfiguration(config, resources.displayMetrics)
 
         // Restart activity to apply the new language
+        /*
+        no need to restart
         val intent = context.packageManager.getLaunchIntentForPackage(context.packageName)
         intent?.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        context.startActivity(intent)
+        context.startActivity(intent)*/
     }
 
 }

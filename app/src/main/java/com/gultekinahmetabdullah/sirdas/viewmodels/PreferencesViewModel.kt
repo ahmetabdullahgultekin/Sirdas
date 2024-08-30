@@ -5,13 +5,12 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.gultekinahmetabdullah.sirdas.classes.dataclasses.UserPreferences
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
-class PreferencesViewModel() : ViewModel() {
+class PreferencesViewModel(userPreferences: UserPreferences) : ViewModel() {
 
     private val db = FirebaseFirestore.getInstance()
     private val usersCollection = db.collection("user-preferences")
@@ -25,23 +24,27 @@ class PreferencesViewModel() : ViewModel() {
         try {
             // Load the user's preferences
             viewModelScope.launch {
-                fetchUserPreferences(FirebaseAuth.getInstance().currentUser?.uid ?: "")
+
+                _userPreferences.value = userPreferences
+
+                //fetchUserPreferences(FirebaseAuth.getInstance().currentUser?.uid ?: "")
 
                 // Update the theme based on the user's preferences from the database
                 //onThemeChange(_userPreferences.value?.themeDark ?: false)
-
-                /*                if (_userPreferences.value == null) {
-                                    // Load the user's preferences from the MainActivity locally
-                                    val userPreferencesFromLocal = MainActivity().fetchUserPreferences()
-                                    _userPreferences.value = UserPreferences(
-                                        userId = userPreferencesFromLocal.userId,
-                                        isThemeDark = userPreferencesFromLocal.isThemeDark,
-                                        language = userPreferencesFromLocal.language,
-                                        isNotificationEnabled = userPreferencesFromLocal.isNotificationEnabled,
-                                        isSoundEnabled = userPreferencesFromLocal.isSoundEnabled,
-                                        isVibrationEnabled = userPreferencesFromLocal.isVibrationEnabled
-                                    )
-                                }*/
+                /*
+                if (_userPreferences.value == null) {
+                    // Load the user's preferences from the MainActivity locally
+                    val userPreferencesFromLocal = MainActivity().fetchUserPreferences()
+                    _userPreferences.value = UserPreferences(
+                        userId = userPreferencesFromLocal.userId,
+                        isThemeDark = userPreferencesFromLocal.isThemeDark,
+                        language = userPreferencesFromLocal.language,
+                        isNotificationEnabled = userPreferencesFromLocal.isNotificationEnabled,
+                        isSoundEnabled = userPreferencesFromLocal.isSoundEnabled,
+                        isVibrationEnabled = userPreferencesFromLocal.isVibrationEnabled
+                    )
+                }
+                */
             }
         } catch (e: Exception) {
             Log.e("PreferencesViewModel", "Error fetching preferences.", e)

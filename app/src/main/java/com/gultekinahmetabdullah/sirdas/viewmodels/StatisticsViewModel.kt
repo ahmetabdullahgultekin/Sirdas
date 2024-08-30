@@ -1,11 +1,15 @@
 package com.gultekinahmetabdullah.sirdas.viewmodels
 
 import androidx.lifecycle.ViewModel
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.PieEntry
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
-class StatisticsViewModel : ViewModel() {/*
+class StatisticsViewModel : ViewModel() {
 
     private val _monthlyData = MutableStateFlow<List<Entry>>(emptyList())
-    val monthlyData: StateFlow<List<SaveableStateRegistry.Entry>> = _monthlyData
+    val monthlyData: StateFlow<List<Entry>> = _monthlyData
 
     private val _annualData = MutableStateFlow<List<Entry>>(emptyList())
     val annualData: StateFlow<List<Entry>> = _annualData
@@ -50,10 +54,10 @@ class StatisticsViewModel : ViewModel() {/*
     fun pieChartData(): List<PieEntry> {
         // Replace this with actual data
         return listOf(
-            PieEntry(40f, "Category 1"),
-            PieEntry(30f, "Category 2"),
-            PieEntry(20f, "Category 3"),
-            PieEntry(10f, "Category 4")
+            PieEntry(40f, "Cat 1"),
+            PieEntry(30f, "Cat 2"),
+            PieEntry(20f, "Cat 3"),
+            PieEntry(10f, "Cat 4")
         )
-    }*/
+    }
 }

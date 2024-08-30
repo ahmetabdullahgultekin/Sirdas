@@ -87,6 +87,6 @@ dependencies {
 
     implementation(libs.firebase.storage.ktx.v2020) // Or your preferred version
 
-//    implementation(com.github.PhilJay:MPAndroidChart:v3.1.0')
+    implementation(libs.mpandroidchart)
 
 }
