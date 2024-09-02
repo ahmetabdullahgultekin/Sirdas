@@ -10,7 +10,6 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import com.google.firebase.auth.FirebaseAuth
 import com.gultekinahmetabdullah.sirdas.classes.dataclasses.UserPreferences
 import com.gultekinahmetabdullah.sirdas.classes.enums.Languages
@@ -24,8 +23,6 @@ import com.gultekinahmetabdullah.sirdas.viewmodels.DocumentViewModel
 import com.gultekinahmetabdullah.sirdas.viewmodels.HealthViewModel
 import com.gultekinahmetabdullah.sirdas.viewmodels.PreferencesViewModel
 import com.gultekinahmetabdullah.sirdas.viewmodels.UserViewModel
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
 import java.util.Locale
 
 class MainActivity : ComponentActivity() {
