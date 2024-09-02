@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">Sırdaş</string>
+    <string name="msg_token_fmt" translatable="false">FCM Token: %1$s</string>
+    <string name="temp1">When dynamic data is available, new cards will display your daily summary.</string>
+
     <string name="welcome_message">Welcome to Sırdaş</string>
     <string name="documents">Documents</string>
     <string name="images">Images</string>
@@ -293,4 +296,53 @@
     <string name="select_avatar">Select Avatar</string>
     <string name="show_password">Show Password</string>
     <string name="hide_password">Hide Password</string>
+    <string name="recently_viewed">Recently Viewed</string>
+    <string name="recently_added">Recently Added</string>
+    <string name="recently_updated">Recently Updated</string>
+    <string name="recently_deleted">Recently Deleted</string>
+    <string name="recently_downloaded">Recently Downloaded</string>
+    <string name="recently_uploaded">Recently Uploaded</string>
+    <string name="recently_shared">Recently Shared</string>
+    <string name="recently_watched">Recently Watched</string>
+    <string name="recently_listened">Recently Listened</string>
+    <string name="recently_read">Recently Read</string>
+    <string name="recently_written">Recently Written</string>
+    <string name="recently_received">Recently Received</string>
+    <string name="recently_sent">Recently Sent</string>
+    <string name="recently_accepted">Recently Accepted</string>
+    <string name="recently_declined">Recently Declined</string>
+    <string name="recently_allowed">Recently Allowed</string>
+    <string name="recent_feedbacks">Recent Feedbacks</string>
+    <string name="no_recent_feedbacks">No Recent Feedbacks</string>
+    <string name="image">Image</string>
+    <string name="audio">Audio</string>
+    <string name="document">Document</string>
+    <string name="note">Note</string>
+    <string name="contact">Contact</string>
+    <string name="bookmark">Bookmark</string>
+    <string name="calendar_goes_here">Calendar goes here</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="directory">Directory</string>
+    <string name="file">File</string>
+    <string name="folder">Folder</string>
+    <string name="study_session">Study Session</string>
+    <string name="work_session">Work Session</string>
+    <string name="home_session">Home Session</string>
+    <string name="internet_session">Internet Session</string>
+    <string name="time">Time</string>
+    <string name="duration">Duration</string>
+    <string name="start_time">Start Time</string>
+    <string name="end_time">End Time</string>
+    <string name="date">Date</string>
+    <string name="start_date">Start Date</string>
+    <string name="end_date">End Date</string>
+    <string name="day">Day</string>
+    <string name="week">Week</string>
+    <string name="month">Month</string>
+    <string name="year">Year</string>
+    <string name="hour">Hour</string>
+    <string name="minute">Minute</string>
+    <string name="second">Second</string>
+    <string name="millisecond">Millisecond</string>
+    <string name="time_left">Time Left</string>
 </resources>

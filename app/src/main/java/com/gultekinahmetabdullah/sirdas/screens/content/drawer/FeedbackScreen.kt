@@ -76,13 +76,13 @@ fun FeedbackScreen(viewModel: UserViewModel) {
         Spacer(modifier = Modifier.height(16.dp))
 
         // Attachment Section
-        Text(
+        /*Text(
             text = "Attach a screenshot or additional file (optional):",
             style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier.padding(bottom = 8.dp)
         )
         Button(
-            onClick = { /* Handle file attachment */ },
+            onClick = { *//* Handle file attachment *//* },
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(text = "Attach File")
@@ -92,7 +92,7 @@ fun FeedbackScreen(viewModel: UserViewModel) {
             text = attachment.value ?: "No file attached",
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
-        )
+        )*/
 
         Spacer(modifier = Modifier.height(24.dp))
 

@@ -23,11 +23,13 @@ import com.gultekinahmetabdullah.sirdas.R
 import kotlinx.coroutines.delay
 
 @Composable
-fun SplashScreen() {
+fun SplashScreen(
+    onSplashScreenFinished: () -> Unit
+) {
 
-    val runningRate = 3000L
+    val runningRate = 2000L
     val alpha = remember { Animatable(1f) }
-    val velocity by remember { mutableFloatStateOf(0.01f) }
+    val velocity by remember { mutableFloatStateOf(0.1f) }
     var alphaValue by remember { mutableFloatStateOf(1f) }
     LaunchedEffect(runningRate) {
         delay(runningRate)
@@ -35,6 +37,7 @@ fun SplashScreen() {
             alphaValue -= velocity
             alpha.animateTo(alphaValue)
         }
+        onSplashScreenFinished()
     }
 
     Surface(

@@ -18,6 +18,8 @@ import com.gultekinahmetabdullah.sirdas.viewmodels.PreferencesViewModel
 fun SigningScreen(onSignIn: () -> Unit, onSignUp: () -> Unit, viewModel: PreferencesViewModel) {
     val navController = rememberNavController()
 
+
+
     NavHost(
         navController = navController,
         startDestination = "signin",

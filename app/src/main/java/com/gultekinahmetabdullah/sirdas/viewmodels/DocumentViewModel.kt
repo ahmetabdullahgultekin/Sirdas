@@ -7,6 +7,7 @@ import android.os.Environment
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.gultekinahmetabdullah.sirdas.classes.dataclasses.Document
@@ -19,8 +20,18 @@ class DocumentViewModel : ViewModel() {
 
     private val storageReference: StorageReference = FirebaseStorage.getInstance().reference
 
+    private val uid = FirebaseAuth.getInstance().currentUser?.uid ?: ""
+
     var fileItems = mutableStateListOf<Document>()
         private set
+
+    init {
+        try {
+            //fetchFiles()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
 
     // Upload a file to Firebase Storage
     fun uploadFile(uri: Uri, fileName: String) {
@@ -28,20 +39,54 @@ class DocumentViewModel : ViewModel() {
             val fileRef = storageReference.child("documents/${fileName.trim()}")
             fileRef.putFile(uri).await()
             val downloadUrl = fileRef.downloadUrl.await().toString()
-            fileItems.add(Document(name = fileName, downloadUrl = downloadUrl))
+            fileItems.add(
+                Document(
+                    uid = uid,
+                    id = "",
+                    name = fileName,
+                    downloadUrl = downloadUrl,
+                    createdAt = System.currentTimeMillis(),
+                    updatedAt = System.currentTimeMillis(),
+                    path = fileRef.path,
+                    directory = false
+                )
+            )
         }
     }
 
     // Fetch all files from Firebase Storage
     fun fetchFiles() {
-        viewModelScope.launch(Dispatchers.IO) {
-            val files = storageReference.child("documents").listAll().await()
-            val fileList = files.items.map { storageRef ->
-                val downloadUrl = storageRef.downloadUrl.await().toString()
-                Document(name = storageRef.name, downloadUrl = downloadUrl)
+
+        try {
+            viewModelScope.launch(Dispatchers.IO) {
+                val files = storageReference.child("documents").listAll().await()
+
+                if (files.items.isEmpty()) {
+                    throw Exception("No files found")
+                }
+
+                val fileList = files.items.map { storageRef ->
+                    val downloadUrl = storageRef.downloadUrl.await().toString()
+                    if (downloadUrl.isEmpty()) {
+                        throw Exception("Download URL is empty")
+                    }
+
+                    Document(
+                        uid = uid,
+                        id = "",
+                        name = storageRef.name,
+                        downloadUrl = downloadUrl,
+                        createdAt = System.currentTimeMillis(),
+                        updatedAt = System.currentTimeMillis(),
+                        path = storageRef.path,
+                        directory = false
+                    )
+                }
+                fileItems.clear()
+                fileItems.addAll(fileList)
             }
-            fileItems.clear()
-            fileItems.addAll(fileList)
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 

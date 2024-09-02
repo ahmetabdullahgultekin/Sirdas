@@ -1,8 +1,6 @@
 // HomeScreen.kt
 package com.gultekinahmetabdullah.sirdas.screens.content
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -68,6 +66,7 @@ import com.gultekinahmetabdullah.sirdas.screens.content.bottombar.home.HomeScree
 import com.gultekinahmetabdullah.sirdas.screens.content.bottombar.search.SearchScreen
 import com.gultekinahmetabdullah.sirdas.screens.content.drawer.AboutScreen
 import com.gultekinahmetabdullah.sirdas.screens.content.drawer.BookScreen
+import com.gultekinahmetabdullah.sirdas.screens.content.drawer.DocumentScreen
 import com.gultekinahmetabdullah.sirdas.screens.content.drawer.FeedbackScreen
 import com.gultekinahmetabdullah.sirdas.screens.content.drawer.HealthScreen
 import com.gultekinahmetabdullah.sirdas.screens.content.drawer.JobsScreen
@@ -75,16 +74,16 @@ import com.gultekinahmetabdullah.sirdas.screens.content.drawer.SettingsScreen
 import com.gultekinahmetabdullah.sirdas.screens.content.drawer.StatisticsScreen
 import com.gultekinahmetabdullah.sirdas.screens.content.drawer.StudyScreen
 import com.gultekinahmetabdullah.sirdas.screens.content.drawer.ToDoScreen
-import com.gultekinahmetabdullah.sirdas.screens.content.drawer.document.DocumentScreen
 import com.gultekinahmetabdullah.sirdas.screens.content.drawer.profile.EditProfileScreen
 import com.gultekinahmetabdullah.sirdas.screens.content.drawer.profile.ProfileScreen
 import com.gultekinahmetabdullah.sirdas.viewmodels.BookViewModel
+import com.gultekinahmetabdullah.sirdas.viewmodels.DirectoryViewModel
+import com.gultekinahmetabdullah.sirdas.viewmodels.DocumentViewModel
 import com.gultekinahmetabdullah.sirdas.viewmodels.HealthViewModel
 import com.gultekinahmetabdullah.sirdas.viewmodels.PreferencesViewModel
 import com.gultekinahmetabdullah.sirdas.viewmodels.UserViewModel
 import kotlinx.coroutines.launch
 
-@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainNavigator(
@@ -93,7 +92,9 @@ fun MainNavigator(
     userViewModel: UserViewModel,
     preferencesViewModel: PreferencesViewModel,
     healthViewModel: HealthViewModel,
-    bookViewModel: BookViewModel
+    bookViewModel: BookViewModel,
+    documentViewModel: DocumentViewModel,
+    directoryViewModel: DirectoryViewModel
 ) {
     val context = LocalContext.current
 
@@ -339,13 +340,20 @@ fun MainNavigator(
                             .padding(16.dp, 16.dp, 16.dp, 0.dp)
                             .fillMaxSize()
                     ) {
+
                         composable("home") {
                             HomeScreen(
                                 viewModel = userViewModel
                             )
                         }
-                        composable("search") { SearchScreen() }
-                        composable("calender") { CalendarScreen() }
+
+                        composable("search") {
+                            SearchScreen()
+                        }
+
+                        composable("calender") {
+                            CalendarScreen()
+                        }
 
                         composable("profile") {
                             ProfileScreen(
@@ -363,7 +371,13 @@ fun MainNavigator(
                                 }
                             )
                         }
-                        composable("documents") { DocumentScreen() }
+
+                        composable("documents") {
+                            DocumentScreen(
+                                viewModel = documentViewModel,
+                                directoryViewModel = directoryViewModel
+                            )
+                        }
                         composable("study") { StudyScreen() }
                         composable("internships") { JobsScreen() }
                         composable("todo") { ToDoScreen() }

@@ -1,7 +1,5 @@
 package com.gultekinahmetabdullah.sirdas.screens.content.bottombar.calender
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -29,7 +27,6 @@ import androidx.compose.ui.unit.dp
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun CalendarScreen() {
     val selectedDate = remember { mutableStateOf(LocalDate.now()) }
@@ -61,7 +58,6 @@ fun CalendarScreen() {
 
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun CalendarView(selectedDate: LocalDate, onDateSelected: (LocalDate) -> Unit) {
     // Basic Date Navigation (previous/next day)

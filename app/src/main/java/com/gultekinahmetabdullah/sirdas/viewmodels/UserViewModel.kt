@@ -16,7 +16,11 @@ class UserViewModel : ViewModel() {
     var userProfile by mutableStateOf<User?>(null)
 
     init {
-        loadUserProfile()
+        try {
+            loadUserProfile()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     private fun loadUserProfile() {
@@ -40,6 +44,7 @@ class UserViewModel : ViewModel() {
     }
 
     private suspend fun getCurrentUserProfile(): User? {
+
         val currentUser = FirebaseAuth.getInstance().currentUser
         val userId = currentUser?.uid ?: return null
 

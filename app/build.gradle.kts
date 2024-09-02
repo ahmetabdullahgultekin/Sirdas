@@ -11,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId = "com.gultekinahmetabdullah.sirdas"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -65,6 +65,8 @@ dependencies {
     implementation(libs.firebase.auth.ktx)
     implementation(libs.firebase.firestore.ktx)
     implementation(libs.firebase.storage.ktx)
+    implementation(libs.firebase.messaging.ktx)
+    implementation(libs.androidx.runtime.livedata)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -85,7 +87,7 @@ dependencies {
     // Add the dependencies for any other desired Firebase products
     // https://firebase.google.com/docs/android/setup#available-libraries
 
-    implementation(libs.firebase.storage.ktx.v2020) // Or your preferred version
+    //implementation(libs.firebase.storage.ktx.v2020) // Or your preferred version
 
     implementation(libs.mpandroidchart)
 

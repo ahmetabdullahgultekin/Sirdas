@@ -1,7 +1,7 @@
 package com.gultekinahmetabdullah.sirdas.classes.dataclasses
 
 data class User(
-    val userId: String,
+    val uid: String,
     val profileIconID: Int,
     val name: String,
     val email: String,

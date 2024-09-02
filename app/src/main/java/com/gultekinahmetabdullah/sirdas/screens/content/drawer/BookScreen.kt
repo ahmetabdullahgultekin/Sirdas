@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -18,15 +17,11 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -60,9 +55,9 @@ fun BookScreen(
     var description by remember { mutableStateOf("") }
     var publishedDate by remember { mutableStateOf("") }
     var totalPages by remember { mutableIntStateOf(0) }
-/*    var rating by remember { mutableStateOf("") }
-    var pagesRead by remember { mutableIntStateOf(0) }
-    var finished by remember { mutableStateOf(false) }*/
+    /*    var rating by remember { mutableStateOf("") }
+        var pagesRead by remember { mutableIntStateOf(0) }
+        var finished by remember { mutableStateOf(false) }*/
 
 
     var searchQuery by remember { mutableStateOf("") }
@@ -74,174 +69,163 @@ fun BookScreen(
 
     var selectedBook by remember { mutableStateOf<Book?>(null) }
 
-    Scaffold(
-        modifier = Modifier.fillMaxSize(),
-        topBar = {
-            
-        },
-        floatingActionButton = {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
 
-        }
-    ) { it ->
-        Column(
+        TextField(
+            value = searchQuery,
+            onValueChange = {
+                searchQuery = it
+                viewModel.searchBooks(it)
+            },
+            label = { Text("Search") },
             modifier = Modifier
-                .fillMaxSize()
-                .padding(it)
-        ) {
+                .fillMaxWidth()
+                .padding(16.dp)
+        )
 
-            TextField(
-                value = searchQuery,
-                onValueChange = {
-                    searchQuery = it
-                    viewModel.searchBooks(it)
-                },
-                label = { Text("Search") },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp)
+        if (selectedBook == null) {
+            BookList(
+                books = books,
+                onBookClick = { selectedBook = it }
             )
-
-            if (selectedBook == null) {
-                BookList(
-                    books = books,
-                    onBookClick = { selectedBook = it }
-                )
-            } else {
-                BookDetail(
-                    book = selectedBook!!,
-                    onBackClick = { selectedBook = null },
-                    /*onPursueClick = { book ->
-                        selectedBook = book.copy(finished = !book.finished)
-                    }*/
-                )
-            }
+        } else {
+            BookDetail(
+                book = selectedBook!!,
+                onBackClick = { selectedBook = null },
+                /*onPursueClick = { book ->
+                    selectedBook = book.copy(finished = !book.finished)
+                }*/
+            )
         }
+    }
 
-        if (showDialog) {
-            Dialog(onDismissRequest = { showDialog = false }) {
-                Surface(
-                    modifier = Modifier,
-                    shape = MaterialTheme.shapes.medium,
-                    tonalElevation = 8.dp
+    if (showDialog) {
+        Dialog(onDismissRequest = { showDialog = false }) {
+            Surface(
+                modifier = Modifier,
+                shape = MaterialTheme.shapes.medium,
+                tonalElevation = 8.dp
+            ) {
+                Column(
+                    modifier = Modifier
+                        .padding(16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    Column(
-                        modifier = Modifier
-                            .padding(16.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.spacedBy(16.dp)
+                    Text("Add Book", style = MaterialTheme.typography.titleLarge)
+
+                    TextField(
+                        value = title,
+                        onValueChange = { title = it },
+                        label = { Text("Title") },
+                        modifier = Modifier.fillMaxWidth()
+                    )
+
+                    TextField(
+                        value = author,
+                        onValueChange = { author = it },
+                        label = { Text("Author") },
+                        modifier = Modifier.fillMaxWidth()
+                    )
+
+                    TextField(
+                        value = description,
+                        onValueChange = { description = it },
+                        label = { Text("Description") },
+                        modifier = Modifier.fillMaxWidth()
+                    )
+
+                    TextField(
+                        value = publishedDate,
+                        onValueChange = { publishedDate = it },
+                        label = { Text("Published Date") },
+                        modifier = Modifier.fillMaxWidth()
+                    )
+
+                    TextField(
+                        value = totalPages.toString(),
+                        onValueChange = {
+                            totalPages = it.toIntOrNull() ?: 0
+                        },
+                        label = { Text("Total Pages") },
+                        modifier = Modifier.fillMaxWidth()
+                    )
+
+                    /*                        TextField(
+                                                value = rating,
+                                                onValueChange = { rating = it },
+                                                label = { Text("Rating") },
+                                                modifier = Modifier.fillMaxWidth()
+                                            )
+
+                                            TextField(
+                                                value = pagesRead,
+                                                onValueChange = { pagesRead = it },
+                                                label = { Text("Pages Read") },
+                                                modifier = Modifier.fillMaxWidth(),
+                                                enabled = !finished
+                                            )*/
+
+                    /*                        Row(
+                                                verticalAlignment = Alignment.CenterVertically
+                                            ) {
+                                                Checkbox(
+                                                    checked = finished,
+                                                    onCheckedChange = {
+                                                        finished = it
+                                                        if (it) {
+                                                            pagesRead = totalPages
+                                                        }
+                                                    }
+                                                )
+                                                Spacer(modifier = Modifier.width(4.dp))
+                                                Text("Finished")
+                                            }*/
+
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.End
                     ) {
-                        Text("Add Book", style = MaterialTheme.typography.titleLarge)
-
-                        TextField(
-                            value = title,
-                            onValueChange = { title = it },
-                            label = { Text("Title") },
-                            modifier = Modifier.fillMaxWidth()
-                        )
-
-                        TextField(
-                            value = author,
-                            onValueChange = { author = it },
-                            label = { Text("Author") },
-                            modifier = Modifier.fillMaxWidth()
-                        )
-
-                        TextField(
-                            value = description,
-                            onValueChange = { description = it },
-                            label = { Text("Description") },
-                            modifier = Modifier.fillMaxWidth()
-                        )
-
-                        TextField(
-                            value = publishedDate,
-                            onValueChange = { publishedDate = it },
-                            label = { Text("Published Date") },
-                            modifier = Modifier.fillMaxWidth()
-                        )
-
-                        TextField(
-                            value = totalPages.toString(),
-                            onValueChange = {
-                                totalPages = it.toIntOrNull() ?: 0
-                            },
-                            label = { Text("Total Pages") },
-                            modifier = Modifier.fillMaxWidth()
-                        )
-
-/*                        TextField(
-                            value = rating,
-                            onValueChange = { rating = it },
-                            label = { Text("Rating") },
-                            modifier = Modifier.fillMaxWidth()
-                        )
-
-                        TextField(
-                            value = pagesRead,
-                            onValueChange = { pagesRead = it },
-                            label = { Text("Pages Read") },
-                            modifier = Modifier.fillMaxWidth(),
-                            enabled = !finished
-                        )*/
-
-/*                        Row(
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Checkbox(
-                                checked = finished,
-                                onCheckedChange = {
-                                    finished = it
-                                    if (it) {
-                                        pagesRead = totalPages
-                                    }
-                                }
-                            )
-                            Spacer(modifier = Modifier.width(4.dp))
-                            Text("Finished")
-                        }*/
-
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.End
-                        ) {
-                            TextButton(onClick = { showDialog = false }) {
-                                Text("Cancel")
+                        TextButton(onClick = { showDialog = false }) {
+                            Text("Cancel")
+                        }
+                        Spacer(modifier = Modifier.width(8.dp))
+                        TextButton(onClick = {
+                            // Add the book to Firestore
+                            if (title.isNotBlank() && author.isNotBlank()
+                                && description.isNotBlank() && publishedDate.isNotBlank()
+                                && totalPages != 0
+                            ) {
+                                val book = Book(
+                                    id = 0, // Assign an ID or auto-generate
+                                    title = title,
+                                    author = author,
+                                    description = description,
+                                    publishedDate = publishedDate,
+                                    totalPages = totalPages
+                                )
+                                viewModel.addOrUpdateBook(book)
+                                Toast.makeText(context, "Book added!", Toast.LENGTH_SHORT)
+                                    .show()
+                                showDialog = false
+                            } else {
+                                Toast.makeText(
+                                    context,
+                                    "Please fill in all required fields",
+                                    Toast.LENGTH_SHORT
+                                ).show()
                             }
-                            Spacer(modifier = Modifier.width(8.dp))
-                            TextButton(onClick = {
-                                // Add the book to Firestore
-                                if (title.isNotBlank() && author.isNotBlank()
-                                    && description.isNotBlank() && publishedDate.isNotBlank()
-                                    && totalPages != 0) {
-                                    val book = Book(
-                                        id = 0, // Assign an ID or auto-generate
-                                        title = title,
-                                        author = author,
-                                        description = description,
-                                        publishedDate = publishedDate,
-                                        totalPages = totalPages
-                                    )
-                                    viewModel.addOrUpdateBook(book)
-                                    Toast.makeText(context, "Book added!", Toast.LENGTH_SHORT)
-                                        .show()
-                                    showDialog = false
-                                } else {
-                                    Toast.makeText(
-                                        context,
-                                        "Please fill in all required fields",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                }
-                            }) {
-                                Text("Add")
-                            }
+                        }) {
+                            Text("Add")
                         }
                     }
                 }
             }
         }
     }
-
 }
 
 fun addBook() {
@@ -252,8 +236,9 @@ fun addBook() {
 @Composable
 fun BookDetail(
     book: Book,
-    onBackClick: () -> Unit,/*
-    onPursueClick: (Book) -> Unit*/
+    onBackClick: () -> Unit,
+    /*
+        onPursueClick: (Book) -> Unit*/
 ) {
     Column(modifier = Modifier.padding(16.dp)) {
         IconButton(onClick = onBackClick) {

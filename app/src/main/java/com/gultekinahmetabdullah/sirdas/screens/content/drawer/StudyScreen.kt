@@ -169,7 +169,7 @@ fun CountdownTimer(
     }
 
     Text(
-        text = String.format("%02d:%02d", timeLeft / 60, timeLeft % 60),
+        text = "Time Left: ${timeLeft / 60} minutes ${timeLeft % 60} seconds",
         style = MaterialTheme.typography.headlineSmall,
         modifier = Modifier.padding(16.dp)
     )

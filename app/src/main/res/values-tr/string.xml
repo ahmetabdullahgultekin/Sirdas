@@ -2,6 +2,8 @@
 <resources>
     <string name="app_name">Sırdaş</string>
     <string name="welcome_message">Sırdaş\'a Hoş Geldiniz</string>
+    <string name="temp1">Dinamik veriler mevcut olduğunda, yeni kartlar günlük özetinizi gösterecektir.</string>
+
     <string name="documents">Belgeler</string>
     <string name="images">Görseller</string>
     <string name="videos">Videolar</string>
@@ -294,4 +296,54 @@
     <string name="select_avatar">Avatar Seç</string>
     <string name="show_password">Şifreyi Göster</string>
     <string name="hide_password">Şifreyi Gizle</string>
+    <string name="recently_viewed">Son Görüntülenen</string>
+    <string name="recently_added">Son Eklenen</string>
+    <string name="recently_updated">Son Güncellenen</string>
+    <string name="recently_deleted">Son Silinen</string>
+    <string name="recently_downloaded">Son İndirilen</string>
+    <string name="recently_uploaded">Son Yüklenen</string>
+    <string name="recently_shared">Son Paylaşılan</string>
+    <string name="recently_watched">Son İzlenen</string>
+    <string name="recently_listened">Son Dinlenen</string>
+    <string name="recently_read">Son Okunan</string>
+    <string name="recently_written">Son Yazılan</string>
+    <string name="recently_received">Son Alınan</string>
+    <string name="recently_sent">Son Gönderilen</string>
+    <string name="recently_accepted">Son Kabul Edilen</string>
+    <string name="recently_declined">Son Reddedilen</string>
+    <string name="recently_allowed">Son İzin Verilen</string>
+    <string name="recent_feedbacks">Son Geri Bildirimler</string>
+    <string name="no_recent_feedbacks">Son Geri Bildirim Yok</string>
+    <string name="image">Görsel</string>
+    <string name="audio">Ses</string>
+    <string name="document">Belge</string>
+    <string name="note">Not</string>
+    <string name="contact">Kişi</string>
+    <string name="bookmark">Yer İmi</string>
+    <string name="calendar_goes_here">Takvim buraya gelecek</string>
+    <string name="edit_profile">Profili Düzenle</string>
+    <string name="directory">Dizin</string>
+    <string name="file">Dosya</string>
+    <string name="folder">Klasör</string>
+    <string name="study_session">Çalışma Oturumu</string>
+    <string name="work_session">İş Oturumu</string>
+    <string name="home_session">Ev Oturumu</string>
+    <string name="internet_session">İnternet Oturumu</string>
+    <string name="time">Zaman</string>
+    <string name="duration">Süre</string>
+    <string name="start_time">Başlama Zamanı</string>
+    <string name="end_time">Bitiş Zamanı</string>
+    <string name="date">Tarih</string>
+    <string name="start_date">Başlangıç Tarihi</string>
+    <string name="end_date">Bitiş Tarihi</string>
+    <string name="day">Gün</string>
+    <string name="week">Hafta</string>
+    <string name="month">Ay</string>
+    <string name="year">Yıl</string>
+    <string name="hour">Saat</string>
+    <string name="minute">Dakika</string>
+    <string name="second">Saniye</string>
+    <string name="millisecond">Milisaniye</string>
+    <string name="time_left">Kalan Zaman</string>
+
 </resources>

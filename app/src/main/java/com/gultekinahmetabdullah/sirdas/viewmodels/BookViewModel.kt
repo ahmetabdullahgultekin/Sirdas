@@ -1,7 +1,5 @@
 package com.gultekinahmetabdullah.sirdas.viewmodels
 
-import android.widget.Toast
-import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -23,7 +21,12 @@ class BookViewModel : ViewModel() {
     val bookListLiveData: LiveData<List<Book>> get() = _bookListLiveData
 
     init {
-        fetchAllBooks()
+        try {
+            fetchAllBooks()
+        } catch (e: Exception) {
+            _bookListLiveData.value = emptyList()
+            e.printStackTrace()
+        }
     }
 
     // Fetch a single book by ID

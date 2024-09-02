@@ -6,7 +6,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -49,7 +48,6 @@ import com.gultekinahmetabdullah.sirdas.viewmodels.UserViewModel
 import kotlinx.coroutines.launch
 import kotlin.enums.EnumEntries
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun EditProfileScreen(viewModel: UserViewModel, onCancel: () -> Unit) {
     var name by remember { mutableStateOf(viewModel.userProfile?.name ?: "") }
@@ -167,7 +165,7 @@ fun EditProfileScreen(viewModel: UserViewModel, onCancel: () -> Unit) {
                     if (result) {
                         viewModel.saveUserProfile(
                             updatedProfile = User(
-                                userId = currentUser?.uid ?: "Not Found",
+                                uid = currentUser?.uid ?: "Not Found",
                                 profileIconID = profileIconID,
                                 name = name,
                                 email = currentUser?.email ?: "Not Found",
