@@ -36,19 +36,19 @@ class DocumentViewModel : ViewModel() {
     // Upload a file to Firebase Storage
     fun uploadFile(uri: Uri, fileName: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            val fileRef = storageReference.child("documents/${fileName.trim()}")
+            val fileRef = storageReference.child("user_documents/${uid}/${fileName.trim()}")
             fileRef.putFile(uri).await()
             val downloadUrl = fileRef.downloadUrl.await().toString()
             fileItems.add(
                 Document(
                     uid = uid,
-                    id = "",
+                    id = FirebaseAuth.getInstance().currentUser?.uid?.toInt() ?: 0,
                     name = fileName,
                     downloadUrl = downloadUrl,
                     createdAt = System.currentTimeMillis(),
                     updatedAt = System.currentTimeMillis(),
                     path = fileRef.path,
-                    directory = false
+                    directory = false,
                 )
             )
         }
@@ -73,7 +73,7 @@ class DocumentViewModel : ViewModel() {
 
                     Document(
                         uid = uid,
-                        id = "",
+                        id = FirebaseAuth.getInstance().currentUser?.uid?.toInt() ?: 0,
                         name = storageRef.name,
                         downloadUrl = downloadUrl,
                         createdAt = System.currentTimeMillis(),

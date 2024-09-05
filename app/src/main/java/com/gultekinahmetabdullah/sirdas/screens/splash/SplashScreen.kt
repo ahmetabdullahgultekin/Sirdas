@@ -29,7 +29,7 @@ fun SplashScreen(
 
     val runningRate = 2000L
     val alpha = remember { Animatable(1f) }
-    val velocity by remember { mutableFloatStateOf(0.1f) }
+    val velocity by remember { mutableFloatStateOf(0.01f) }
     var alphaValue by remember { mutableFloatStateOf(1f) }
     LaunchedEffect(runningRate) {
         delay(runningRate)

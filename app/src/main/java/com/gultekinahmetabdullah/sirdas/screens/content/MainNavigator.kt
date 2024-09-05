@@ -374,7 +374,7 @@ fun MainNavigator(
 
                         composable("documents") {
                             DocumentScreen(
-                                viewModel = documentViewModel,
+                                documentViewModel = documentViewModel,
                                 directoryViewModel = directoryViewModel
                             )
                         }
