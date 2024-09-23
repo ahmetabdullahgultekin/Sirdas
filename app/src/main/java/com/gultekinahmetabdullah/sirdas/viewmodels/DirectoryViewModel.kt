@@ -25,7 +25,7 @@ class DirectoryViewModel : ViewModel() {
 
     init {
         try {
-            _directories.value = fetchDirectories().value
+            //_directories.value = fetchDirectories().value
         } catch (e: Exception) {
             e.printStackTrace()
         }

@@ -1,9 +1,9 @@
 package com.gultekinahmetabdullah.sirdas.screens.content.drawer
 
 import android.widget.Toast
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -17,8 +17,12 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -28,6 +32,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -36,8 +41,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.decapitalize
+import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.zIndex
 import com.gultekinahmetabdullah.sirdas.R
 import com.gultekinahmetabdullah.sirdas.classes.dataclasses.Book
 import com.gultekinahmetabdullah.sirdas.viewmodels.BookViewModel
@@ -53,44 +61,141 @@ fun BookScreen(
     var title by remember { mutableStateOf("") }
     var author by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
-    var publishedDate by remember { mutableStateOf("") }
+    var publishedYear by remember { mutableIntStateOf(0) }
     var totalPages by remember { mutableIntStateOf(0) }
     /*    var rating by remember { mutableStateOf("") }
         var pagesRead by remember { mutableIntStateOf(0) }
         var finished by remember { mutableStateOf(false) }*/
 
 
-    var searchQuery by remember { mutableStateOf("") }
-    var selectedFilter by remember { mutableStateOf("All") }
-    val filterOptions = listOf("All", "Finished", "Reading", "Not Started")
+    var isFilterDialogOpen by remember { mutableStateOf(false) }
+    var bookSearchQuery by remember { mutableStateOf("") }
+    var selectedReadingFilter by remember { mutableStateOf("All") }
+    var selectedBookFilter by remember { mutableStateOf("Title") }
+    val readingFilterOptions = remember { listOf("All", "Finished", "Reading", "Not Started") }
+    val bookFilterOptions = remember { listOf("Title", "Author", "Published Year") }
 
 
-    val books = viewModel.bookListLiveData.value ?: emptyList()
+    val books by viewModel.bookListLiveData.observeAsState(emptyList())
 
     var selectedBook by remember { mutableStateOf<Book?>(null) }
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .zIndex(1f)
+    ) {
+        FloatingActionButton(
+            onClick = {
+                title = ""
+                author = ""
+                description = ""
+                publishedYear = 0
+                totalPages = 0
+                showDialog = true
+            },
+            content = {
+                Icon(imageVector = Icons.Filled.Add, contentDescription = "Add Book")
+            },
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(16.dp)
+        )
+    }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
     ) {
 
-        TextField(
-            value = searchQuery,
-            onValueChange = {
-                searchQuery = it
-                viewModel.searchBooks(it)
-            },
-            label = { Text("Search") },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
-        )
-
         if (selectedBook == null) {
-            BookList(
-                books = books,
-                onBookClick = { selectedBook = it }
+
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
+                elevation = CardDefaults.cardElevation()
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 16.dp, end = 16.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text("Filter by:", style = MaterialTheme.typography.titleLarge)
+
+                    TextButton(
+                        onClick = { isFilterDialogOpen = true }
+                    ) {
+                        Text(selectedBookFilter, style = MaterialTheme.typography.titleLarge)
+                    }
+
+                    Text(text = "And", style = MaterialTheme.typography.titleLarge)
+
+                    TextButton(
+                        onClick = { isFilterDialogOpen = true }
+                    ) {
+                        Text(selectedReadingFilter, style = MaterialTheme.typography.titleLarge)
+                    }
+                }
+
+                DropdownMenu(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .align(Alignment.CenterHorizontally),
+                    expanded = isFilterDialogOpen,
+                    onDismissRequest = { isFilterDialogOpen = false },
+                    content = {
+                        readingFilterOptions.forEach { option ->
+                            TextButton(
+                                onClick = {
+                                    selectedReadingFilter = option
+                                    isFilterDialogOpen = false
+                                },
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
+                                Text(option, style = MaterialTheme.typography.titleLarge)
+                            }
+                        }
+
+                        HorizontalDivider()
+
+                        bookFilterOptions.forEach { option ->
+                            TextButton(
+                                onClick = {
+                                    selectedBookFilter = option
+                                    isFilterDialogOpen = false
+                                },
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
+                                Text(option, style = MaterialTheme.typography.titleLarge)
+                            }
+                        }
+                    }
+                )
+            }
+
+            TextField(
+                value = bookSearchQuery,
+                placeholder = { Text("Search...") },
+                onValueChange = {
+                    println(
+                        selectedBookFilter.replace(" ", "").decapitalize(Locale.current)
+                    )
+                    bookSearchQuery = it
+                    viewModel.searchBooks(bookSearchQuery, selectedBookFilter)
+                },
+                label = { Text("Search") },
+                modifier = Modifier.fillMaxWidth(),
             )
+
+            if (books != null) {
+                BookList(
+                    books = books,
+                    onBookClick = { selectedBook = it }
+                )
+            }
         } else {
             BookDetail(
                 book = selectedBook!!,
@@ -119,6 +224,7 @@ fun BookScreen(
 
                     TextField(
                         value = title,
+                        placeholder = { Text("The Hobbit") },
                         onValueChange = { title = it },
                         label = { Text("Title") },
                         modifier = Modifier.fillMaxWidth()
@@ -126,6 +232,7 @@ fun BookScreen(
 
                     TextField(
                         value = author,
+                        placeholder = { Text("J.R.R. Tolkien") },
                         onValueChange = { author = it },
                         label = { Text("Author") },
                         modifier = Modifier.fillMaxWidth()
@@ -133,20 +240,23 @@ fun BookScreen(
 
                     TextField(
                         value = description,
+                        placeholder = { Text("A fantasy novel...") },
                         onValueChange = { description = it },
                         label = { Text("Description") },
                         modifier = Modifier.fillMaxWidth()
                     )
 
                     TextField(
-                        value = publishedDate,
-                        onValueChange = { publishedDate = it },
-                        label = { Text("Published Date") },
+                        value = publishedYear.toString(),
+                        placeholder = { Text("1937") },
+                        onValueChange = { publishedYear = it.toIntOrNull() ?: 0 },
+                        label = { Text("Published Year") },
                         modifier = Modifier.fillMaxWidth()
                     )
 
                     TextField(
                         value = totalPages.toString(),
+                        placeholder = { Text("310") },
                         onValueChange = {
                             totalPages = it.toIntOrNull() ?: 0
                         },
@@ -196,15 +306,15 @@ fun BookScreen(
                         TextButton(onClick = {
                             // Add the book to Firestore
                             if (title.isNotBlank() && author.isNotBlank()
-                                && description.isNotBlank() && publishedDate.isNotBlank()
+                                && description.isNotBlank() && publishedYear != 0
                                 && totalPages != 0
                             ) {
                                 val book = Book(
-                                    id = 0, // Assign an ID or auto-generate
+                                    id = "", // Assign an ID or auto-generate
                                     title = title,
                                     author = author,
                                     description = description,
-                                    publishedDate = publishedDate,
+                                    publishedYear = publishedYear,
                                     totalPages = totalPages
                                 )
                                 viewModel.addOrUpdateBook(book)
@@ -247,7 +357,7 @@ fun BookDetail(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Image(
+        Icon(
             painter = painterResource(id = R.drawable.baseline_book_24),
             contentDescription = "Book Cover",
             modifier = Modifier
@@ -259,7 +369,7 @@ fun BookDetail(
 
         Text(text = book.title, style = MaterialTheme.typography.bodyMedium)
         Text(text = "By ${book.author}", style = MaterialTheme.typography.bodyLarge)
-        Text(text = "Published: ${book.publishedDate}", style = MaterialTheme.typography.bodyLarge)
+        Text(text = "Published: ${book.publishedYear}", style = MaterialTheme.typography.bodyLarge)
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -301,7 +411,7 @@ fun BookItem(
         elevation = CardDefaults.cardElevation()
     ) {
         Row(modifier = Modifier.padding(16.dp)) {
-            Image(
+            Icon(
                 painter = painterResource(id = R.drawable.baseline_book_24),
                 contentDescription = "Book Cover",
                 modifier = Modifier.size(64.dp)
@@ -311,7 +421,7 @@ fun BookItem(
                 Text(text = book.title, style = MaterialTheme.typography.bodyLarge)
                 Text(text = book.author, style = MaterialTheme.typography.bodyLarge)
                 Text(
-                    text = "Published: ${book.publishedDate}",
+                    text = "Published: ${book.publishedYear}",
                     style = MaterialTheme.typography.bodyMedium
                 )
             }
